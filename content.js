@@ -1,0 +1,1 @@
+console.log("🧠 leetcode tracker is active")
