@@ -37,14 +37,27 @@ document.addEventListener('DOMContentLoaded', () => {
             const item = document.createElement('div');
             item.className = 'problem-item';
             const difficultyClass = problem.difficulty ? problem.difficulty.toLowerCase() : '';
-            const tagsHtml = Array.isArray(problem.tags) && problem.tags.length > 0
-                ? `<span style='font-size:0.85em; color:#666; margin-left:8px;'>[${problem.tags.join(", ")}]</span>`
-                : "<span style='font-size:0.85em; color:#bbb; margin-left:8px;'>[No tags]</span>";
-            item.innerHTML = `
-                <a href="${problem.url}" target="_blank">${problem.title}</a>
-                <span class="difficulty ${difficultyClass}">${problem.difficulty}</span>
-                ${tagsHtml}
-            `;
+            // Use DOM methods instead of innerHTML for safety
+            const link = document.createElement('a');
+            link.href = problem.url;
+            link.target = '_blank';
+            link.textContent = problem.title;
+
+            const diffSpan = document.createElement('span');
+            diffSpan.className = `difficulty ${difficultyClass}`;
+            diffSpan.textContent = problem.difficulty;
+
+            const tagsSpan = document.createElement('span');
+            tagsSpan.style.fontSize = '0.85em';
+            tagsSpan.style.color = problem.tags && problem.tags.length > 0 ? '#666' : '#bbb';
+            tagsSpan.style.marginLeft = '8px';
+            tagsSpan.textContent = problem.tags && problem.tags.length > 0
+                ? `[${problem.tags.join(', ')}]`
+                : '[No tags]';
+
+            item.appendChild(link);
+            item.appendChild(diffSpan);
+            item.appendChild(tagsSpan);
             problemsList.appendChild(item);
         });
     }

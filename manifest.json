@@ -3,8 +3,7 @@
   "name": "KeepCode",
   "version": "0.1.0",
   "description": "Focus on answering problems, let KeepCode handle the rest",
-  "permissions": ["storage", "tabs", "activeTab"],
-  "host_permissions": ["https://leetcode.com/*"],
+  "permissions": ["storage", "tabs", "activeTab", "https://leetcode.com/*"],
   "background": {
     "scripts": ["background.js"],
     "persistent": false

@@ -17,11 +17,20 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
         const container = document.getElementById("popupContent");
-        container.innerHTML = `
-            <h3>Problem: ${data.title}</h3>
-            <p>Difficulty: ${data.difficulty} </p>
-            <p id="status"><strong>${data.status || "Unsolved"}</strong></p>
-        `;
+
+        container.innerHTML = "";
+        const titleEl = document.createElement("h3");
+        titleEl.textContent = `Problem: ${data.title}`;
+        const diffEl = document.createElement("p");
+        diffEl.textContent = `Difficulty: ${data.difficulty} `;
+        const statusEl = document.createElement("p");
+        statusEl.id = "status";
+        const strongEl = document.createElement("strong");
+        strongEl.textContent = data.status || "Unsolved";
+        statusEl.appendChild(strongEl);
+        container.appendChild(titleEl);
+        container.appendChild(diffEl);
+        container.appendChild(statusEl);
 
         // Listen for problem solved message
         browser.runtime.onMessage.addListener((msg) => {
@@ -97,15 +106,27 @@ document.addEventListener("DOMContentLoaded", () => {
                 const item = document.createElement("div");
                 item.className = "problem-item";
                 const difficultyClass = problem.difficulty ? problem.difficulty.toLowerCase() : "";
-                // Show tags if available
-                const tagsHtml = Array.isArray(problem.tags) && problem.tags.length > 0
-                    ? `<span style='font-size:0.85em; color:#666; margin-left:8px;'>[${problem.tags.join(", ")}]</span>`
-                    : "<span style='font-size:0.85em; color:#bbb; margin-left:8px;'>[No tags]</span>";
-                item.innerHTML = `
-                    <a href="${problem.url}" target="_blank">${problem.title}</a>
-                    <span class="difficulty ${difficultyClass}">${problem.difficulty}</span>
-                    ${tagsHtml}
-                `;
+                // Use DOM methods instead of innerHTML for safety
+                const link = document.createElement('a');
+                link.href = problem.url;
+                link.target = '_blank';
+                link.textContent = problem.title;
+
+                const diffSpan = document.createElement('span');
+                diffSpan.className = `difficulty ${difficultyClass}`;
+                diffSpan.textContent = problem.difficulty;
+
+                const tagsSpan = document.createElement('span');
+                tagsSpan.style.fontSize = '0.85em';
+                tagsSpan.style.color = problem.tags && problem.tags.length > 0 ? '#666' : '#bbb';
+                tagsSpan.style.marginLeft = '8px';
+                tagsSpan.textContent = problem.tags && problem.tags.length > 0
+                    ? `[${problem.tags.join(', ')}]`
+                    : '[No tags]';
+
+                item.appendChild(link);
+                item.appendChild(diffSpan);
+                item.appendChild(tagsSpan);
                 list.appendChild(item);
             });
         }
