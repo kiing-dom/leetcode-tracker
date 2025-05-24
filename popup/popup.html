@@ -3,13 +3,14 @@
     <head>
         <title>KeepCode</title>
         <link rel="stylesheet" href="popup.css">
+        <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     </head>
 
     <body>
         <div style="display: flex; align-items: center; justify-content: space-between;">
             <h1>KeepCode</h1>
             <button id="optionsBtn" title="Settings" style="background: none; border: none; cursor: pointer; padding: 0; margin-left: 8px;">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8868bd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 8 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 8a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 8 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09A1.65 1.65 0 0 0 16 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 8c.14.31.22.65.22 1v.09A1.65 1.65 0 0 0 21 12c0 .35-.08.69-.22 1z"/></svg>
+                <i class="ri-settings-3-line ri-lg"></i>
             </button>
         </div>
         <div id="popupContent">
@@ -25,7 +26,7 @@
             <label for="tagFilter" style="font-size: 0.95em;">Filter by tag:</label>
             <select id="tagFilter">
                 <option value="all">All</option>
-                <!-- Tag options will be populated dynamically -->
+                <!-- Tag options are populated dynamically -->
             </select>
         </div>
         <div id="solvedList"></div>
