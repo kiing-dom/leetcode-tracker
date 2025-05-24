@@ -40,7 +40,37 @@ function getProblemData() {
   
     observer.observe(document.body, { childList: true, subtree: true });
   }
+
+  function waitForSubmissionResult(slug) {
+    const observer = new MutationObserver(() => {
+        const resultEl = document.querySelector('span[data-e2e-locator="submission-result"]');
+        if (resultEl && resultEl.textContent.includes("Accepted")) {
+            console.log("✅ Accepted detected via submission result!");
+
+            browser.storage.local.get(slug).then((existing) => {
+                const data = existing[slug] || {};
+                data.status = "Solved";
+                data.solvedAt = Date.now();
+                browser.storage.local.set({ [slug]: data })
+
+                browser.runtime.sendMessage({ type: 'PROBLEM_SOLVED', slug});
+                observer.disconnect();
+            });
+        }
+    });
+
+    observer.observe(document.body, {childList: true, subtree: true});
+  }
   
   waitForContentAndStore();
 
+  const { slug } = getProblemData();
+  waitForSubmissionResult(slug);
+
+  browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.type === 'GET_PROBLEM_DATA') {
+        const data = getProblemData();
+        sendResponse(data);
+    }
+  });
   
