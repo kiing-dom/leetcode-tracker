@@ -40,7 +40,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener("DOMContentLoaded", () => {
     browser.storage.local.get(null).then((allData) => {
-        const problems = Object.values(allData).filter(p => p.status === "Solved");
+        // Filter out invalid/undefined problems before displaying
+        const problems = Object.values(allData).filter(p =>
+            p &&
+            typeof p.title === 'string' && p.title !== 'Unknown Title' &&
+            typeof p.slug === 'string' && p.slug !== 'unknown-problem' &&
+            typeof p.difficulty === 'string' && p.difficulty !== 'Unknown Difficulty' &&
+            p.status === "Solved"
+        );
         // Sort by solvedAt descending (most recent first)
         problems.sort((a, b) => (b.solvedAt || 0) - (a.solvedAt || 0));
 

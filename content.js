@@ -23,6 +23,11 @@ async function getProblemData() {
         tags = [];
     }
 
+    // Only return valid data if title and slug are valid
+    if (!title || title === "Unknown Title" || !problemSlug || problemSlug === "unknown-problem") {
+        return null;
+    }
+
     const problemData = {
         title,
         difficulty,
@@ -43,6 +48,7 @@ function waitForContentAndStore() {
         if (titleEl && titleEl.textContent.trim()) {
             observer.disconnect();
             const data = await getProblemData();
+            if (!data) return; // Don't store invalid/undefined problems
             browser.storage.local.set({ [data.slug]: data }).then(() => {
                 console.log("Saved to storage:", data);
             }).catch((err) => {
