@@ -4,21 +4,55 @@
     <meta charset="UTF-8">
     <title>KeepCode Options</title>
     <link rel="stylesheet" href="options.css">
+    <!-- Remix Icon CDN for icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 </head>
 <body>
-    <h1>KeepCode Extension Settings</h1>
-    <section>
-        <h2>Settings (Coming Soon)</h2>
-        <p>Here you’ll be able to customize your experience in future updates.</p>
-    </section>
-    <section>
-        <h2>About &amp; Support</h2>
-        <p>
-            Made by <a href="https://linktr.ee/267dngi" target="_blank">@_dngi</a>.<br>
-            Star the project on <a href="https://github.com/kiing-dom/leetcode-tracker" target="_blank">GitHub</a>!<br>
-            If you find this useful, consider <a href="https://ko-fi.com/267dngi" target="_blank">buying me a kebab 😏</a>.
-        </p>
-    </section>
+    <div class="options-container">
+        <nav class="sidebar">
+            <ul>
+                <li class="nav-item active" data-section="problems">
+                    <i class="ri-list-check-2 ri-lg"></i>
+                    <span>All Problems</span>
+                </li>
+                <li class="nav-item" data-section="settings">
+                    <i class="ri-settings-3-line ri-lg"></i>
+                    <span>Settings</span>
+                </li>
+                <li class="nav-item" data-section="about">
+                    <i class="ri-question-line ri-lg"></i>
+                    <span>FAQ / About</span>
+                </li>
+            </ul>
+        </nav>
+        <main class="main-content">
+            <section id="section-problems" class="section active">
+                <h2>All Solved Problems</h2>
+                <div class="problems-toolbar">
+                    <input type="text" id="searchInput" placeholder="Search by title...">
+                    <select id="tagFilter">
+                        <option value="all">All Tags</option>
+                    </select>
+                </div>
+                <div id="problemsList"></div>
+            </section>
+            <section id="section-settings" class="section">
+                <h2>Settings</h2>
+                <p>Settings will be available here in a future update.</p>
+            </section>
+            <section id="section-about" class="section">
+                <h2>FAQ / About</h2>
+                <p>
+                    Made by <a href="https://linktr.ee/267dngi" target="_blank">@dngi</a>.<br>
+                    Star the project on <a href="https://github.com/kiing-dom/leetcode-tracker" target="_blank">GitHub</a>!<br>
+                    If you find this useful, consider <a href="https://www.ko-fi/267dngi" target="_blank"> buying me a kebab 😏</a>.<br><br>
+                    <strong>FAQ:</strong><br>
+                    <b>Q:</b> How do I use this extension?<br>
+                    <b>A:</b> Just solve problems on LeetCode as usual! Your progress is tracked automatically.<br>
+                </p>
+            </section>
+        </main>
+    </div>
     <script src="options.js"></script>
 </body>
 </html>

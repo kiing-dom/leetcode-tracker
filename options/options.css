@@ -26,3 +26,115 @@ a {
 a:hover {
     text-decoration: underline;
 }
+
+/* Layout */
+.options-container {
+    display: flex;
+    min-height: 100vh;
+    background: #f8fafc;
+}
+
+.sidebar {
+    width: 200px;
+    background: #fff;
+    border-right: 1.5px solid #e5e7eb;
+    padding-top: 32px;
+    min-height: 100vh;
+}
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 24px;
+    cursor: pointer;
+    color: #374151;
+    font-size: 1.08em;
+    border-left: 4px solid transparent;
+    transition: background 0.15s, border-color 0.15s;
+}
+.nav-item.active, .nav-item:hover {
+    background: #f3f4f6;
+    border-left: 4px solid #8868bd;
+    color: #8868bd;
+}
+
+.main-content {
+    flex: 1;
+    padding: 32px 40px;
+    background: #f8fafc;
+}
+.section {
+    display: none;
+}
+.section.active {
+    display: block;
+}
+
+/* Problems Section */
+.problems-toolbar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+#searchInput {
+    flex: 1;
+    padding: 7px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    font-size: 1em;
+}
+#tagFilter {
+    padding: 7px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    font-size: 1em;
+}
+#problemsList {
+    margin-top: 8px;
+}
+.problem-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #e0e7ef;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+}
+.problem-item a {
+    color: #1e293b;
+    text-decoration: none;
+    font-weight: 500;
+}
+.difficulty {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+.difficulty.easy {
+    background: #d1fae5;
+    color: #059669;
+}
+.difficulty.medium {
+    background: #fef3c7;
+    color: #b45309;
+}
+.difficulty.hard {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+/* About/FAQ links */
+.section a {
+    color: #2563eb;
+    text-decoration: none;
+}
+.section a:hover {
+    text-decoration: underline;
+}
