@@ -1,0 +1,28 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f8fafc;
+    margin: 0;
+    padding: 24px;
+    min-width: 350px;
+}
+
+h1 {
+    color: #8868bd;
+    margin-bottom: 18px;
+}
+
+section {
+    background: #f8f8ff;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+a {
+    color: #2563eb;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}

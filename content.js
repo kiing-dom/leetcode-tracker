@@ -63,7 +63,7 @@ function getProblemData() {
   }
   
   waitForContentAndStore();
-
+ 
   const { slug } = getProblemData();
   waitForSubmissionResult(slug);
 

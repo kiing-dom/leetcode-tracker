@@ -18,9 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         const container = document.getElementById("popupContent");
         container.innerHTML = `
-            <h2>${data.title}</h2>
+            <h3>Problem: ${data.title}</h3>
             <p>Difficulty: ${data.difficulty} </p>
-            <p id="status">${data.status || "Unsolved"}</p>
+            <p id="status"><strong>${data.status || "Unsolved"}</strong></p>
         `;
 
         // Listen for problem solved message
@@ -50,11 +50,27 @@ document.addEventListener("DOMContentLoaded", () => {
         problems.forEach(problem => {
             const item = document.createElement("div");
             item.className = "problem-item";
+            // Add difficulty as a class for color styling
+            const difficultyClass = problem.difficulty ? problem.difficulty.toLowerCase() : "";
             item.innerHTML = `
                 <a href="${problem.url}" target="_blank">${problem.title}</a>
-                <span class="difficulty">${problem.difficulty}</span>
+                <span class="difficulty ${difficultyClass}">${problem.difficulty}</span>
             `;
             list.appendChild(item);
         })
     })
 })
+
+document.addEventListener("DOMContentLoaded", () => {
+    const optionsBtn = document.getElementById("optionsBtn");
+    if (optionsBtn) {
+        optionsBtn.addEventListener("click", () => {
+            if (browser.runtime && browser.runtime.openOptionsPage) {
+                browser.runtime.openOptionsPage();
+            } else {
+                // fallback for browsers that don't support openOptionsPage
+                window.open("../options/options.html", "_blank");
+            }
+        });
+    }
+});
