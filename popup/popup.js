@@ -41,25 +41,87 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
     browser.storage.local.get(null).then((allData) => {
         const problems = Object.values(allData).filter(p => p.status === "Solved");
-        const list = document.getElementById("solvedList");
+        // Sort by solvedAt descending (most recent first)
+        problems.sort((a, b) => (b.solvedAt || 0) - (a.solvedAt || 0));
 
-        if (problems.length === 0) {
-            list.innerHTML = "<p>No solved problems yet</p>"
+        // Collect all unique tags (flattened)
+        const tagSet = new Set();
+        problems.forEach(p => {
+            if (Array.isArray(p.tags)) {
+                p.tags.forEach(tag => tagSet.add(tag));
+            }
+        });
+        const tags = Array.from(tagSet);
+
+        // Populate tag filter dropdown
+        const tagFilter = document.getElementById("tagFilter");
+        if (tagFilter) {
+            // Remove old options except 'All'
+            tagFilter.innerHTML = '<option value="all">All</option>';
+            if (tags.length > 0) {
+                tags.forEach(tag => {
+                    const opt = document.createElement("option");
+                    opt.value = tag;
+                    opt.textContent = tag;
+                    tagFilter.appendChild(opt);
+                });
+            } else {
+                const opt = document.createElement("option");
+                opt.value = "none";
+                opt.textContent = "No tags";
+                tagFilter.appendChild(opt);
+            }
         }
 
-        problems.forEach(problem => {
-            const item = document.createElement("div");
-            item.className = "problem-item";
-            // Add difficulty as a class for color styling
-            const difficultyClass = problem.difficulty ? problem.difficulty.toLowerCase() : "";
-            item.innerHTML = `
-                <a href="${problem.url}" target="_blank">${problem.title}</a>
-                <span class="difficulty ${difficultyClass}">${problem.difficulty}</span>
-            `;
-            list.appendChild(item);
-        })
-    })
-})
+        // Render problems (filtered and limited)
+        function renderProblems() {
+            const list = document.getElementById("solvedList");
+            list.innerHTML = "";
+            let filtered = problems;
+            const selectedTag = tagFilter ? tagFilter.value : "all";
+            if (selectedTag && selectedTag !== "all" && selectedTag !== "none") {
+                filtered = problems.filter(p => Array.isArray(p.tags) && p.tags.includes(selectedTag));
+            }
+            const toShow = filtered.slice(0, 5);
+            if (toShow.length === 0) {
+                list.innerHTML = "<p>No solved problems yet</p>";
+            }
+            toShow.forEach(problem => {
+                const item = document.createElement("div");
+                item.className = "problem-item";
+                const difficultyClass = problem.difficulty ? problem.difficulty.toLowerCase() : "";
+                // Show tags if available
+                const tagsHtml = Array.isArray(problem.tags) && problem.tags.length > 0
+                    ? `<span style='font-size:0.85em; color:#666; margin-left:8px;'>[${problem.tags.join(", ")}]</span>`
+                    : "<span style='font-size:0.85em; color:#bbb; margin-left:8px;'>[No tags]</span>";
+                item.innerHTML = `
+                    <a href="${problem.url}" target="_blank">${problem.title}</a>
+                    <span class="difficulty ${difficultyClass}">${problem.difficulty}</span>
+                    ${tagsHtml}
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        if (tagFilter) {
+            tagFilter.addEventListener("change", renderProblems);
+        }
+        renderProblems();
+    });
+
+    // View All link opens options page
+    const viewAllLink = document.getElementById("viewAllLink");
+    if (viewAllLink) {
+        viewAllLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            if (browser.runtime && browser.runtime.openOptionsPage) {
+                browser.runtime.openOptionsPage();
+            } else {
+                window.open("../options/options.html", "_blank");
+            }
+        });
+    }
+});
 
 document.addEventListener("DOMContentLoaded", () => {
     const optionsBtn = document.getElementById("optionsBtn");

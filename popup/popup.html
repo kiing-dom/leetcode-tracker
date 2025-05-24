@@ -18,8 +18,19 @@
             </p>
         </div>
         
-        <div id="solvedList">
-
+        <div>
+            <h4>Recent Problems</h4>
+        </div>
+        <div id="filterBar" style="margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+            <label for="tagFilter" style="font-size: 0.95em;">Filter by tag:</label>
+            <select id="tagFilter">
+                <option value="all">All</option>
+                <!-- Tag options will be populated dynamically -->
+            </select>
+        </div>
+        <div id="solvedList"></div>
+        <div style="margin-top: 10px; text-align: right;">
+            <a href="#" id="viewAllLink" style="font-size: 0.95em; color: #2563eb; text-decoration: underline; cursor: pointer;">View All</a>
         </div>
         <script src="popup.js"></script>
     </body>
