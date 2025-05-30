@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xml:lang="en">
+    <head>
+        <title>KeepCode</title>
+        <link rel="stylesheet" href="popup.css">
+        <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+            <h1>KeepCode</h1>
+            <button id="optionsBtn" title="Settings" style="background: none; border: none; cursor: pointer; padding: 0; margin-left: 8px;">
+                <i class="ri-settings-3-line ri-lg"></i>
+            </button>
+        </div>
+        <div id="popupContent">
+            <p>
+                Loading problem info...
+            </p>
+        </div>
+        
+        <div>
+            <h4>Recent Problems</h4>
+        </div>
+        <div id="filterBar" style="margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+            <label for="tagFilter" style="font-size: 0.95em;">Filter by tag:</label>
+            <select id="tagFilter">
+                <option value="all">All</option>
+                <!-- Tag options are populated dynamically -->
+            </select>
+        </div>
+        <div id="solvedList"></div>
+        <div style="margin-top: 10px; text-align: right;">
+            <a href="#" id="viewAllLink" style="font-size: 0.95em; color: #2563eb; text-decoration: underline; cursor: pointer;">View All</a>
+        </div>
+        <script src="popup.js"></script>
+    </body>
+</html>

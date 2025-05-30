@@ -1,0 +1,61 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f8fafc;
+    margin: 0;
+    padding: 16px;
+    min-width: 300px;
+  }
+  
+  h1 {
+    font-size: 1.5em;
+    color: #8868bd;
+    margin-bottom: 12px;
+  }
+  
+  #popupContent {
+    background: #f8f8ff;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  
+  #solvedList {
+    margin-top: 10px;
+  }
+  
+  .problem-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #e0e7ef;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+  }
+  
+  .problem-item a {
+    color: #1e293b;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .difficulty {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-weight: bold;
+  }
+  
+  .difficulty.easy {
+    background: #d1fae5;
+    color: #059669;
+  }
+  .difficulty.medium {
+    background: #fef3c7;
+    color: #b45309;
+  }
+  .difficulty.hard {
+    background: #fee2e2;
+    color: #b91c1c;
+  }

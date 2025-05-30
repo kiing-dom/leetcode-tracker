@@ -1,0 +1,25 @@
+{
+  "manifest_version": 2,
+  "name": "KeepCode",
+  "version": "0.1.0",
+  "description": "Focus on answering problems, let KeepCode handle the rest",
+  "permissions": ["storage", "tabs", "activeTab", "https://leetcode.com/*"],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "browser_action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": "icons/keepcode-icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://leetcode.com/problems/*"],
+      "js": ["leetcodeApi.js", "content.js"]
+    }
+  ],
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  }
+}
