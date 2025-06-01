@@ -10,41 +10,53 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    browser.runtime
-      .sendMessage({ type: "GET_PROBLEM_DATA", slug })
-      .then((data) => {
-        const container = document.getElementById("popupContent");
-        if (!data) {
-          container.innerHTML = "<p>To track a problem please visit a leetcode problem page</p>";
-          return;
+    const container = document.getElementById("popupContent");
+
+    browser.storage.local.get(slug).then((result) => {
+      let data = result[slug];
+      if (data) {
+        renderCurrentProblem(data);
+      } else {
+
+        browser.runtime
+          .sendMessage({ type: "GET_PROBLEM_DATA", slug })
+          .then((data) => {
+            if (data) {
+              renderCurrentProblem(data);
+            } else {
+              container.innerHTML = "<p>To track a problem please visit a leetcode problem page</p>";
+            }
+          })
+          .catch((err) => {
+            container.innerHTML = "<p>Unable to read this page.</p>";
+            console.error(err);
+          });
+      }
+    });
+
+    function renderCurrentProblem(data) {
+      container.innerHTML = "";
+      const titleEl = document.createElement("h3");
+      titleEl.textContent = `Problem: ${data.title}`;
+      const diffEl = document.createElement("p");
+      diffEl.textContent = `Difficulty: ${data.difficulty} `;
+      const statusEl = document.createElement("p");
+      statusEl.id = "status";
+      const strongEl = document.createElement("strong");
+      strongEl.textContent = data.status || "Unsolved";
+      statusEl.appendChild(strongEl);
+      container.appendChild(titleEl);
+      container.appendChild(diffEl);
+      container.appendChild(statusEl);
+
+      // Listen for problem solved message
+      browser.runtime.onMessage.addListener((msg) => {
+        if (msg.type === "PROBLEM_SOLVED" && msg.slug === data.slug) {
+          const statusEl = document.getElementById("status");
+          if (statusEl) statusEl.textContent = "Solved ✅";
         }
-
-        container.innerHTML = "";
-        const titleEl = document.createElement("h3");
-        titleEl.textContent = `Problem: ${data.title}`;
-        const diffEl = document.createElement("p");
-        diffEl.textContent = `Difficulty: ${data.difficulty} `;
-        const statusEl = document.createElement("p");
-        statusEl.id = "status";
-        const strongEl = document.createElement("strong");
-        strongEl.textContent = data.status || "Unsolved";
-        statusEl.appendChild(strongEl);
-        container.appendChild(titleEl);
-        container.appendChild(diffEl);
-        container.appendChild(statusEl);
-
-        // Listen for problem solved message
-        browser.runtime.onMessage.addListener((msg) => {
-          if (msg.type === "PROBLEM_SOLVED" && msg.slug === data.slug) {
-            const statusEl = document.getElementById("status");
-            if (statusEl) statusEl.textContent = "Solved ✅";
-          }
-        });
-      })
-      .catch((err) => {
-        document.getElementById("popupContent").innerHTML = "<p>Unable to read this page</p>";
-        console.error(err);
       });
+    }
   });
 });
 
@@ -62,10 +74,9 @@ document.addEventListener("DOMContentLoaded", () => {
         p.difficulty !== "Unknown Difficulty" &&
         p.status === "Solved"
     );
-    // Sort by solvedAt descending (most recent first)
+
     problems.sort((a, b) => (b.solvedAt || 0) - (a.solvedAt || 0));
 
-    // Collect all unique tags (flattened)
     const tagSet = new Set();
     problems.forEach((p) => {
       if (Array.isArray(p.tags)) {
@@ -94,7 +105,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // Render problems (filtered and limited)
     function renderProblems() {
       const list = document.getElementById("solvedList");
       list.innerHTML = "";
@@ -115,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const difficultyClass = problem.difficulty
           ? problem.difficulty.toLowerCase()
           : "";
-        // Use DOM methods instead of innerHTML for safety
+
         const link = document.createElement("a");
         link.href = problem.url;
         link.target = "_blank";
@@ -148,12 +158,11 @@ document.addEventListener("DOMContentLoaded", () => {
     renderProblems();
   });
 
-  // View All link opens options page
   const viewAllLink = document.getElementById("viewAllLink");
   if (viewAllLink) {
     viewAllLink.addEventListener("click", (e) => {
       e.preventDefault();
-      if (browser.runtime && browser.runtime.openOptionsPage) {
+      if (browser.runtime?.openOptionsPage) {
         browser.runtime.openOptionsPage();
       } else {
         window.open("../options/options.html", "_blank");
@@ -166,10 +175,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const optionsBtn = document.getElementById("optionsBtn");
   if (optionsBtn) {
     optionsBtn.addEventListener("click", () => {
-      if (browser.runtime && browser.runtime.openOptionsPage) {
+      if (browser.runtime?.openOptionsPage) {
         browser.runtime.openOptionsPage();
       } else {
-        // fallback for browsers that don't support openOptionsPage
         window.open("../options/options.html", "_blank");
       }
     });
