@@ -49,13 +49,21 @@ function waitForContentAndStore() {
             observer.disconnect();
             const data = await getProblemData();
             if (!data) return; // Don't store invalid/undefined problems
-            browser.storage.local.set({ [data.slug]: data }).then(() => {
-                console.log("Saved to storage:", data);
-            }).catch((err) => {
-                console.error("Storage error:", err);
+            // Preserve existing status and solvedAt if present
+            browser.storage.local.get(data.slug).then((existing) => {
+                const prev = existing[data.slug] || {};
+                if (prev.status === "Solved") {
+                    data.status = prev.status;
+                    data.solvedAt = prev.solvedAt;
+                }
+                browser.storage.local.set({ [data.slug]: data }).then(() => {
+                    console.log("Saved to storage:", data);
+                }).catch((err) => {
+                    console.error("Storage error:", err);
+                });
+                // Start watching for submission result after we have the slug
+                waitForSubmissionResult(data.slug);
             });
-            // Start watching for submission result after we have the slug
-            waitForSubmissionResult(data.slug);
         }
     });
 
