@@ -45,17 +45,24 @@ async function getProblemData() {
 function waitForContentAndStore() {
     const observer = new MutationObserver(async () => {
         const titleEl = document.querySelector("div");
-        if (titleEl && titleEl.textContent.trim()) {
+        if (titleEl?.textContent.trim()) {
             observer.disconnect();
             const data = await getProblemData();
             if (!data) return; // Don't store invalid/undefined problems
-            browser.storage.local.set({ [data.slug]: data }).then(() => {
-                console.log("Saved to storage:", data);
-            }).catch((err) => {
-                console.error("Storage error:", err);
+            // Only update non-status fields, always preserve status/solvedAt
+            browser.storage.local.get(data.slug).then((existing) => {
+                const prev = existing[data.slug] || {};
+                // Always preserve status and solvedAt if they exist
+                if (prev.status) data.status = prev.status;
+                if (prev.solvedAt) data.solvedAt = prev.solvedAt;
+                browser.storage.local.set({ [data.slug]: data }).then(() => {
+                    console.log("Saved to storage (non-status fields updated):", data);
+                }).catch((err) => {
+                    console.error("Storage error:", err);
+                });
+                // Start watching for submission result after we have the slug
+                waitForSubmissionResult(data.slug);
             });
-            // Start watching for submission result after we have the slug
-            waitForSubmissionResult(data.slug);
         }
     });
 
@@ -65,7 +72,7 @@ function waitForContentAndStore() {
 function waitForSubmissionResult(slug) {
     const observer = new MutationObserver(() => {
         const resultEl = document.querySelector('span[data-e2e-locator="submission-result"]');
-        if (resultEl && resultEl.textContent.includes("Accepted")) {
+        if (resultEl?.textContent.includes("Accepted")) {
             console.log("✅ Accepted detected via submission result!");
 
             browser.storage.local.get(slug).then((existing) => {

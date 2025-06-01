@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
   "name": "KeepCode",
-  "version": "0.2.0",
-  "description": "Focus on answering problems, let KeepCode handle the rest",
+  "version": "0.2.1",
+  "description": "Prep smarter for coding interviews: KeepCode tracks your LeetCode progress so you can focus on solving.",
   "permissions": ["storage", "tabs", "activeTab", "https://leetcode.com/*"],
   "background": {
     "scripts": ["background.js"],
