@@ -44,19 +44,17 @@ jobs:
             echo "changed=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Check if release already exists
+      - name: Check if release for current version exists
         id: release_exists
         run: |
-          TAG="v${{ steps.versions.outputs.current }}"
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            https://api.github.com/repos/${{ github.repository }}/releases/tags/$TAG)
-
-          if [ "$STATUS" -eq 200 ]; then
+          VERSION_TAG="v${{ steps.versions.outputs.current }}"
+          if gh release view "$VERSION_TAG" > /dev/null 2>&1; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else
             echo "exists=false" >> $GITHUB_OUTPUT
           fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Zip Extension Files
         run: |
@@ -71,7 +69,7 @@ jobs:
             -x "keepcode.zip"
 
       - name: Create Release
-        if: steps.check_version.outputs.changed == 'true' && steps.release_exists.outputs.exists == 'false'
+        if: steps.check_version.outputs.changed == 'true' || steps.release_exists.outputs.exists == 'false'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.versions.outputs.current }}
