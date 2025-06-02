@@ -31,7 +31,7 @@ A browser extension to help you track your LeetCode progress, manage problems, a
 
 ## Installation
 
-1. Download the latest release from [Releases](#).
+1. Download the latest release from [Releases](https://github.com/kiing-dom/leetcode-tracker/releases).
 2. Unzip the package.
 3. Go to your browser’s extensions page.
 4. Enable "Developer mode" and load the unpacked extension from the extracted folder.
