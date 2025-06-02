@@ -1,0 +1,69 @@
+name: Release Extension on Version Change
+
+on:
+  push:
+    branches:
+      - master
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Get current and previous manifest.json
+        id: manifest
+        run: |
+          git fetch origin ${{ github.event.before }}
+          cp manifest.json manifest.current.json
+          git checkout ${{ github.event.before }} -- manifest.json || echo "No previous manifest.json"
+          cp manifest.json manifest.prev.json || echo "No previous manifest.json"
+          git checkout ${{ github.sha }} -- manifest.json
+
+      - name: Extract versions
+        id: versions
+        run: |
+          CURR_VER=$(jq -r .version manifest.current.json)
+          PREV_VER=$(jq -r .version manifest.prev.json 2>/dev/null || echo "none")
+          echo "current=$CURR_VER" >> $GITHUB_OUTPUT
+          echo "previous=$PREV_VER" >> $GITHUB_OUTPUT
+
+      - name: Check if version changed
+        id: check_version
+        run: |
+          if [ "${{ steps.versions.outputs.current }}" != "${{ steps.versions.outputs.previous }}" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Zip Extension Files
+        run: |
+          rm -f keepcode.zip
+          zip -r keepcode.zip . \
+            -x "assets/*" \
+            -x "*.md" \
+            -x "assets" \
+            -x "assets/screenshots/*" \
+            -x ".git/*" \
+            -x ".github/*" \
+            -x "keepcode.zip"
+
+      - name: Create Release
+        if: steps.check_version.outputs.changed == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.versions.outputs.current }}
+          name: Release v${{ steps.versions.outputs.current }}
+          body: |
+            Automated release for version ${{ steps.versions.outputs.current }}.
+          files: keepcode.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
