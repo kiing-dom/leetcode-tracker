@@ -138,3 +138,42 @@ a:hover {
 .section a:hover {
     text-decoration: underline;
 }
+
+.about-content {
+    background: #fafbfc;
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin-top: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    font-size: 1.05em;
+    color: #222;
+}
+
+.about-content p {
+    margin-bottom: 12px;
+}
+
+.about-content a {
+    color: #0074d9;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.about-content a:hover {
+    color: #005fa3;
+    text-decoration: underline;
+}
+
+.about-version {
+    margin: 10px 0 18px 0;
+    font-size: 0.98em;
+    color: #555;
+    font-style: italic;
+}
+
+.faq {
+    margin-top: 10px;
+    background: #f3f6fa;
+    border-left: 3px solid #0074d9;
+    padding: 12px 16px;
+    border-radius: 5px;
+}

@@ -1,6 +1,3 @@
-// options.js
-// Handles navigation and basic filtering for the options page
-
 document.addEventListener('DOMContentLoaded', () => {
     // Sidebar navigation
     const navItems = document.querySelectorAll('.nav-item');
@@ -96,5 +93,12 @@ document.addEventListener('DOMContentLoaded', () => {
         searchInput.addEventListener('input', () => {
             renderProblems(problems, tagFilter.value, searchInput.value);
         });
+
+        // set extension version in About section
+        const extVersionElem = document.getElementById('extVersion');
+        if (extVersionElem && browser.runtime.getManifest) {
+            const manifest = browser.runtime.getManifest();
+            extVersionElem.textContent = manifest.version;
+        }
     });
 });
