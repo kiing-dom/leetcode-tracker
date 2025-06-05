@@ -79,11 +79,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         tagFilter.innerHTML = '<option value="all">All Tags</option>';
-        Array.from(tagSet).forEach(tag => {
-            const opt = document.createElement('option');
-            opt.value = tag;
-            opt.textContent = tag;
-            tagFilter.appendChild(opt);
+        Array.from(tagSet)
+            .sort((a, b) => a.localeCompare(b))
+            .forEach(tag => {
+                const opt = document.createElement('option');
+                opt.value = tag;
+                opt.textContent = tag;
+                tagFilter.appendChild(opt);
         });
         // Initial render
         renderProblems(problems, tagFilter.value, searchInput.value);
