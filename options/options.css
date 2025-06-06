@@ -81,6 +81,12 @@ a:hover {
     gap: 12px;
     margin-bottom: 18px;
 }
+.problems-toolbar #searchInput {
+    width: 240px !important;
+    min-width: 120px !important;
+    max-width: 320px !important;
+    flex: 0 0 auto !important;
+}
 #searchInput {
     flex: 1;
     padding: 7px 12px;
@@ -179,9 +185,10 @@ a:hover {
 }
 
 /* Custom Tag Dropdown Styles */
-.tag-dropdown {
+.tag-dropdown,
+.tag-dropdown-selected,
+.tag-dropdown-list {
     position: relative;
-    min-width: 160px;
     font-size: 1em;
 }
 .tag-dropdown-selected {
