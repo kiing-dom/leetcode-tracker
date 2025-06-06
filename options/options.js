@@ -16,7 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // All Problems: load and render problems
     const problemsList = document.getElementById('problemsList');
     const searchInput = document.getElementById('searchInput');
-    const tagFilter = document.getElementById('tagFilter');
+    const tagDropdownContainer = document.getElementById('tagDropdownContainer');
+    let tagDropdownInstance = null;
 
     function renderProblems(problems, filterTag, searchTerm) {
         problemsList.innerHTML = '';
@@ -75,25 +76,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 p.tags.forEach(tag => tagSet.add(tag));
             }
         });
-        tagFilter.innerHTML = '<option value="all">All Tags</option>';
-        Array.from(tagSet)
-            .sort((a, b) => a.localeCompare(b))
-            .forEach(tag => {
-                const opt = document.createElement('option');
-                opt.value = tag;
-                opt.textContent = tag;
-                tagFilter.appendChild(opt);
-        });
+        const allTags = Array.from(tagSet).sort((a, b) => a.localeCompare(b));
+        if (tagDropdownInstance) {
+            tagDropdownInstance.setTags(allTags);
+        } else {
+            tagDropdownInstance = new window.TagDropdown(tagDropdownContainer, allTags, (selectedTag) => {
+                renderProblems(problems, selectedTag, searchInput.value);
+            });
+        }
         // Initial render
-        renderProblems(problems, tagFilter.value, searchInput.value);
+        renderProblems(problems, tagDropdownInstance ? tagDropdownInstance.selectedTag : 'all', searchInput.value);
         // Event listeners
-        tagFilter.addEventListener('change', () => {
-            renderProblems(problems, tagFilter.value, searchInput.value);
-        });
         searchInput.addEventListener('input', () => {
-            renderProblems(problems, tagFilter.value, searchInput.value);
+            renderProblems(problems, tagDropdownInstance ? tagDropdownInstance.selectedTag : 'all', searchInput.value);
         });
-
         // set extension version in About section
         const extVersionElem = document.getElementById('extVersion');
         if (extVersionElem && browser.runtime.getManifest) {

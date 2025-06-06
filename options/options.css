@@ -177,3 +177,69 @@ a:hover {
     padding: 12px 16px;
     border-radius: 5px;
 }
+
+/* Custom Tag Dropdown Styles */
+.tag-dropdown {
+    position: relative;
+    min-width: 160px;
+    font-size: 1em;
+}
+.tag-dropdown-selected {
+    background: #fff;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    padding: 7px 12px;
+    cursor: pointer;
+    user-select: none;
+    min-width: 120px;
+    transition: border-color 0.15s;
+}
+.tag-dropdown-selected:focus {
+    outline: none;
+    border-color: #8868bd;
+}
+.tag-dropdown-list {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    z-index: 10;
+    padding: 0;
+}
+.tag-dropdown-search {
+    width: 100%;
+    margin: 0;
+    border-radius: 5px 5px 0 0;
+    border-bottom: 1px solid #e5e7eb;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    font-size: 1em;
+    background: #fafbfc;
+}
+.tag-dropdown-options {
+    max-height: 180px;
+    overflow-y: auto;
+    padding-top: 4px;
+}
+.tag-dropdown-list {
+    border-radius: 5px;
+    overflow: hidden;
+}
+.tag-dropdown-option {
+    padding: 7px 16px;
+    cursor: pointer;
+    transition: background 0.13s;
+    color: #374151;
+}
+.tag-dropdown-option.selected,
+.tag-dropdown-option:hover {
+    background: #f3f4f6;
+    color: #8868bd;
+}
