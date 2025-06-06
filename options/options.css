@@ -250,3 +250,27 @@ a:hover {
     background: #f3f4f6;
     color: #8868bd;
 }
+
+#sortDropdown {
+    background: #fff;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%238868bd" height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M7.293 8.293a1 1 0 011.414 0L10 9.586l1.293-1.293a1 1 0 111.414 1.414l-2 2a1 1 0 01-1.414 0l-2-2a1 1 0 010-1.414z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 18px 18px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    padding: 7px 32px 7px 12px;
+    font-size: 1em;
+    min-width: 160px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    transition: border-color 0.15s;
+    position: relative;
+}
+#sortDropdown:focus {
+    outline: none;
+    border-color: #8868bd;
+}
