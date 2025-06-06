@@ -1,6 +1,3 @@
-// options.js
-// Handles navigation and basic filtering for the options page
-
 document.addEventListener('DOMContentLoaded', () => {
     // Sidebar navigation
     const navItems = document.querySelectorAll('.nav-item');
@@ -16,12 +13,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    const sortDropdown = document.getElementById('sortDropdown');
+
     // All Problems: load and render problems
     const problemsList = document.getElementById('problemsList');
     const searchInput = document.getElementById('searchInput');
-    const tagFilter = document.getElementById('tagFilter');
+    const tagDropdownContainer = document.getElementById('tagDropdownContainer');
+    let tagDropdownInstance = null;
 
-    function renderProblems(problems, filterTag, searchTerm) {
+    function renderProblems(problems, filterTag, searchTerm, sortOrder = 'recent-desc') {
         problemsList.innerHTML = '';
         let filtered = problems;
         if (filterTag && filterTag !== 'all') {
@@ -30,6 +30,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (searchTerm) {
             filtered = filtered.filter(p => p.title.toLowerCase().includes(searchTerm.toLowerCase()));
         }
+        // Sorting
+        if (sortOrder === 'recent-desc') {
+            filtered.sort((a, b) => (b.solvedAt || 0) - (a.solvedAt || 0));
+        } else if (sortOrder === 'recent-asc') {
+            filtered.sort((a, b) => (a.solvedAt || 0) - (b.solvedAt || 0));
+        }
         if (filtered.length === 0) {
             problemsList.innerHTML = '<p>No problems found.</p>';
         }
@@ -37,16 +43,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const item = document.createElement('div');
             item.className = 'problem-item';
             const difficultyClass = problem.difficulty ? problem.difficulty.toLowerCase() : '';
-            // Use DOM methods instead of innerHTML for safety
             const link = document.createElement('a');
             link.href = problem.url;
             link.target = '_blank';
             link.textContent = problem.title;
-
             const diffSpan = document.createElement('span');
             diffSpan.className = `difficulty ${difficultyClass}`;
             diffSpan.textContent = problem.difficulty;
-
             const tagsSpan = document.createElement('span');
             tagsSpan.style.fontSize = '0.85em';
             tagsSpan.style.color = problem.tags && problem.tags.length > 0 ? '#666' : '#bbb';
@@ -54,7 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
             tagsSpan.textContent = problem.tags && problem.tags.length > 0
                 ? `[${problem.tags.join(', ')}]`
                 : '[No tags]';
-
             item.appendChild(link);
             item.appendChild(diffSpan);
             item.appendChild(tagsSpan);
@@ -78,21 +80,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 p.tags.forEach(tag => tagSet.add(tag));
             }
         });
-        tagFilter.innerHTML = '<option value="all">All Tags</option>';
-        Array.from(tagSet).forEach(tag => {
-            const opt = document.createElement('option');
-            opt.value = tag;
-            opt.textContent = tag;
-            tagFilter.appendChild(opt);
-        });
+        const allTags = Array.from(tagSet).sort((a, b) => a.localeCompare(b));
+        let currentProblems = problems; // Store for re-sorting/filtering
+        function rerender() {
+            renderProblems(
+                currentProblems,
+                tagDropdownInstance ? tagDropdownInstance.selectedTag : 'all',
+                searchInput.value,
+                sortDropdown.value
+            );
+        }
+        if (tagDropdownInstance) {
+            tagDropdownInstance.setTags(allTags);
+        } else {
+            tagDropdownInstance = new window.TagDropdown(tagDropdownContainer, allTags, () => rerender());
+        }
         // Initial render
-        renderProblems(problems, tagFilter.value, searchInput.value);
+        rerender();
         // Event listeners
-        tagFilter.addEventListener('change', () => {
-            renderProblems(problems, tagFilter.value, searchInput.value);
-        });
-        searchInput.addEventListener('input', () => {
-            renderProblems(problems, tagFilter.value, searchInput.value);
-        });
+        searchInput.addEventListener('input', rerender);
+        sortDropdown.addEventListener('change', rerender);
+
+        const extVersionElem = document.getElementById('extVersion');
+        if (extVersionElem && browser.runtime.getManifest) {
+            const manifest = browser.runtime.getManifest();
+            extVersionElem.textContent = manifest.version;
+        }
     });
 });

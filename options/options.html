@@ -30,8 +30,10 @@
                 <h2>All Solved Problems</h2>
                 <div class="problems-toolbar">
                     <input type="text" id="searchInput" placeholder="Search by title...">
-                    <select id="tagFilter">
-                        <option value="all">All Tags</option>
+                    <div id="tagDropdownContainer"></div>
+                    <select id="sortDropdown" style="margin-left:8px;">
+                        <option value="recent-desc">Most recently solved</option>
+                        <option value="recent-asc">Least recently solved</option>
                     </select>
                 </div>
                 <div id="problemsList"></div>
@@ -42,17 +44,26 @@
             </section>
             <section id="section-about" class="section">
                 <h2>FAQ / About</h2>
-                <p>
-                    Made by <a href="https://linktr.ee/267dngi" target="_blank">@dngi</a>.<br>
-                    Star the project on <a href="https://github.com/kiing-dom/leetcode-tracker" target="_blank">GitHub</a>!<br>
-                    If you find this useful, consider <a href="https://www.ko-fi.com/267dngi" target="_blank"> buying me a kebab 😏</a>.<br><br>
-                    <strong>FAQ:</strong><br>
-                    <b>Q:</b> How do I use this extension?<br>
-                    <b>A:</b> Just solve problems on LeetCode as usual! Your progress is tracked automatically.<br>
-                </p>
+                <div class="about-version" style="margin-bottom: 18px;">
+                    <span id="extVersion"></span>
+                </div>
+                <hr style="margin-bottom: 18px;">
+                <div class="about-content">
+                    <p>
+                        Made by <a href="https://linktr.ee/267dngi" target="_blank">@dngi</a>.<br>
+                        Star the project on <a href="https://github.com/kiing-dom/leetcode-tracker" target="_blank">GitHub</a>!<br>
+                        If you find this useful, consider <a href="https://www.ko-fi.com/267dngi" target="_blank"> buying me a kebab 😏</a>.
+                    </p>
+                    <div class="faq">
+                        <strong>FAQ:</strong><br>
+                        <b>Q:</b> How do I use this extension?<br>
+                        <b>A:</b> Just solve problems on LeetCode as usual! Your progress is tracked automatically.<br>
+                    </div>
+                </div>
             </section>
         </main>
     </div>
+    <script src="tagDropdown.js"></script>
     <script src="options.js"></script>
 </body>
 </html>
