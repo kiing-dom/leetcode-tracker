@@ -12,7 +12,7 @@ A browser extension to help you track your LeetCode progress, manage problems, a
   - [Usage](#usage)
   - [Options](#options)
   - [Contributing](#contributing)
-  - [Roadmap](#roadmap)
+  - [Requests](#requests)
   - [License](#license)
   - [Acknowledgements](#acknowledgements)
   - [Contact](#contact)
@@ -56,9 +56,8 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 4. Push to the branch (`git push origin feature/cool-new-feature`)
 5. Open a pull request
 
-## Roadmap
-- [ ] [Need a way to sync progress across devices]
-- [ ] [and more]
+## Requests
+If you have any feature requests, create an issue and use the 'feature request' tag
 
 ## License
 
