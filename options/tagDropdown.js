@@ -1,6 +1,3 @@
-// Custom Tag Dropdown Component
-// Usage: new TagDropdown(containerElement, tagsArray, onChange)
-
 class TagDropdown {
     constructor(container, tags, onChange) {
         this.container = container;
