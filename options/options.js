@@ -20,6 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('searchInput');
     const tagDropdownContainer = document.getElementById('tagDropdownContainer');
     let tagDropdownInstance = null;
+    const difficultyDropdownContainer = document.getElementById('difficultyDropdownContainer');
+    let difficultyDropdownInstance = null;
 
     function renderProblems(problems, filterTag, searchTerm, sortOrder = 'recent-desc') {
         problemsList.innerHTML = '';
@@ -27,6 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (filterTag && filterTag !== 'all') {
             filtered = filtered.filter(p => Array.isArray(p.tags) && p.tags.includes(filterTag));
         }
+
+        if (filterDifficulty && filterDifficulty == 'all') {
+            filtered = filtered.filter(p => difficulty === filterDifficulty);
+        }
+
         if (searchTerm) {
             filtered = filtered.filter(p => p.title.toLowerCase().includes(searchTerm.toLowerCase()));
         }
@@ -81,20 +88,30 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         const allTags = Array.from(tagSet).sort((a, b) => a.localeCompare(b));
-        let currentProblems = problems; // Store for re-sorting/filtering
+        const allDifficulties = ['Easy', 'Medium', 'Hard'];
+        let currentProblems = problems;
         function rerender() {
             renderProblems(
                 currentProblems,
                 tagDropdownInstance ? tagDropdownInstance.selectedTag : 'all',
+                difficultyDropdownInstance ? difficultyDropdownInstance.selectedDifficulty : 'all',
                 searchInput.value,
                 sortDropdown.value
             );
         }
+
         if (tagDropdownInstance) {
             tagDropdownInstance.setTags(allTags);
         } else {
             tagDropdownInstance = new window.TagDropdown(tagDropdownContainer, allTags, () => rerender());
         }
+
+        if (difficultyDropdownInstance) {
+            difficultyDropdownInstance.setDifficulty(allDifficulties);
+        } else {
+            difficultyDropdownInstance = new window.DifficultyDropdown(difficultyDropdownContainer, allDifficulties, () => rerender());
+        }
+
         // Initial render
         rerender();
         // Event listeners
