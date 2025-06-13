@@ -85,16 +85,22 @@ class DifficultyDropdown {
     }
     
     toggleList() {
-        
+        this.list.style.display = this.list.style.display === 'none' ? 'block' : 'none';
+        if (this.list.style.display === 'block') {
+            this.searchInput.value = '';
+            this.filterTags();
+            this.searchInput.focus();
+        }
     }
 
     closeList() {
-
+        this.list.style.display = 'none';
     }
 
-    selectDifficulty() {
-
+    setDifficulty(difficulties) {
+        this.difficulties = difficulties;
+        this.filterDifficulties = ['all', ...difficulties];
+        this.renderOptions();
     }
-
 }
 window.DifficultyDropdown = DifficultyDropdown;
