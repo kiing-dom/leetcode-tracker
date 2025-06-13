@@ -77,11 +77,15 @@ class DifficultyDropdown {
     }
 
     selectDifficulty(difficulty) {
-        // TODO: Finish function
+        this.selectedDifficulty = difficulty;
+        
+        const textSpan = this.selected.querySelector('.difficulty-dropdown-selected-text');
+        if (textSpan) textSpan.textContent = difficulty === 'all' ? 'All Difficulties' : difficulty;
+        this.closeList();
     }
     
     toggleList() {
-        // TODO: Finish function
+        
     }
 
     closeList() {
