@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const difficultyDropdownContainer = document.getElementById('difficultyDropdownContainer');
     let difficultyDropdownInstance = null;
 
-    function renderProblems(problems, filterTag, searchTerm, sortOrder = 'recent-desc') {
+    function renderProblems(problems, filterTag, filterDifficulty, searchTerm, sortOrder = 'recent-desc') {
         problemsList.innerHTML = '';
         let filtered = problems;
         if (filterTag && filterTag !== 'all') {
