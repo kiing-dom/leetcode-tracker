@@ -34,6 +34,13 @@ class DifficultyDropdown {
         this.list.className = 'difficulty-dropdown-list'
         this.list.style.display = 'none'
 
+        this.searchInput = document.createElement('input');
+        this.searchInput.type = 'text';
+        this.searchInput.className = 'difficulty-dropdown-search';
+        this.searchInput.placeholder = 'Search Difficulties...';
+        this.searchInput.addEventListener('input', () => this.filterDifficulties());
+        this.list.appendChild(this.searchInput);
+
         this.optionsContainer = document.createElement('div');
         this.optionsContainer.className = 'difficulty-dropdown-options';
         this.list.appendChild(this.optionsContainer);
@@ -48,14 +55,28 @@ class DifficultyDropdown {
     }
 
     renderOptions() {
-        
+        this.optionsContainer.innerHTML = '';
+        this.filteredDifficulties.forEach(difficulty => {
+            const opt = document.createElement('div');
+            opt.className = 'difficulty-dropdown-option';
+            opt.textContent = difficulty === 'all' ? 'All Difficulties' : difficulty;
+            if (difficulty === this.selectedDifficulty) opt.classList.add('selected');
+            opt.addEventListener('click', () => this.selectDifficulty(difficulty));
+            this.optionsContainer.appendChild(opt);
+        });
     }
 
     filterDifficulties() {
-        // TODO: Finish function
+        const val = this.searchInput.value.toLowerCase();
+        this.filteredDifficulties = ['all', ...this.difficulties
+            .filter(difficulty => difficulty
+                .toLowerCase()
+                .includes(val)
+            )];
+        this.renderOptions();
     }
 
-    selectDifficulty(tag) {
+    selectDifficulty(difficulty) {
         // TODO: Finish function
     }
     
