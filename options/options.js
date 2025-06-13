@@ -30,8 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
             filtered = filtered.filter(p => Array.isArray(p.tags) && p.tags.includes(filterTag));
         }
 
-        if (filterDifficulty && filterDifficulty == 'all') {
-            filtered = filtered.filter(p => difficulty === filterDifficulty);
+        if (filterDifficulty && filterDifficulty !== 'all') {
+            filtered = filtered.filter(p => p.difficulty === filterDifficulty);
         }
 
         if (searchTerm) {
