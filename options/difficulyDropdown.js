@@ -31,10 +31,24 @@ class DifficultyDropdown {
         this.dropdown.appendChild(this.selected);
         
         this.list = document.createElement('div');
+        this.list.className = 'difficulty-dropdown-list'
+        this.list.style.display = 'none'
+
+        this.optionsContainer = document.createElement('div');
+        this.optionsContainer.className = 'difficulty-dropdown-options';
+        this.list.appendChild(this.optionsContainer);
+
+        this.dropdown.appendChild(this.list);
+        this.container.appendChild(this.dropdown);
+
+        this.renderOptions();
+        document.addEventListener('click', (e) => {
+            if (!this.dropdown.contains(e.target)) this.closeList();
+        });
     }
 
     renderOptions() {
-        // TODO: Finish function
+        
     }
 
     filterDifficulties() {
