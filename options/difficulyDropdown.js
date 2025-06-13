@@ -100,7 +100,7 @@ class DifficultyDropdown {
 
     setDifficulty(difficulties) {
         this.difficulties = difficulties;
-        this.filterDifficulties = ['all', ...difficulties];
+        this.filteredDifficulties = ['all', ...difficulties];
         this.renderOptions();
     }
 }
