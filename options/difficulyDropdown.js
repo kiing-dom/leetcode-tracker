@@ -82,6 +82,7 @@ class DifficultyDropdown {
         const textSpan = this.selected.querySelector('.difficulty-dropdown-selected-text');
         if (textSpan) textSpan.textContent = difficulty === 'all' ? 'All Difficulties' : difficulty;
         this.closeList();
+        if (this.onChange) this.onChange(difficulty);
     }
     
     toggleList() {
