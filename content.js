@@ -1,6 +1,3 @@
-// Import fetchLeetCodeTags from leetcodeApi.js
-// (Assumes leetcodeApi.js is loaded before this script as per manifest)
-
 async function getProblemData() {
     const titleEl = document.querySelector('div[class*="text-title-large"]');
     const title = titleEl ? titleEl.textContent.trim() : "Unknown Title";
