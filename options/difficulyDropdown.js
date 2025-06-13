@@ -89,7 +89,7 @@ class DifficultyDropdown {
         this.list.style.display = this.list.style.display === 'none' ? 'block' : 'none';
         if (this.list.style.display === 'block') {
             this.searchInput.value = '';
-            this.filterTags();
+            this.filterDifficulties();
             this.searchInput.focus();
         }
     }
