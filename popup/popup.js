@@ -1,23 +1,20 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Handle current problem display
   browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
     const tab = tabs[0];
-
     const url = new URL(tab.url);
     const pathParts = url.pathname.split("/").filter(Boolean);
     const slug = pathParts[1] || null;
+    const container = document.getElementById("popupContent");
     if (!slug) {
-      document.getElementById("popupContent").innerHTML = "<p>To track a problem, please visit a leetcode problem page</p>";
+      container.innerHTML = "<p>To track a problem, please visit a leetcode problem page</p>";
       return;
     }
-
-    const container = document.getElementById("popupContent");
-
     browser.storage.local.get(slug).then((result) => {
       let data = result[slug];
       if (data) {
         renderCurrentProblem(data);
       } else {
-
         browser.runtime
           .sendMessage({ type: "GET_PROBLEM_DATA", slug })
           .then((data) => {
@@ -33,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
           });
       }
     });
-
     function renderCurrentProblem(data) {
       container.innerHTML = "";
       const titleEl = document.createElement("h3");
@@ -48,8 +44,6 @@ document.addEventListener("DOMContentLoaded", () => {
       container.appendChild(titleEl);
       container.appendChild(diffEl);
       container.appendChild(statusEl);
-
-      // Listen for problem solved message
       browser.runtime.onMessage.addListener((msg) => {
         if (msg.type === "PROBLEM_SOLVED" && msg.slug === data.slug) {
           const statusEl = document.getElementById("status");
@@ -58,11 +52,9 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   });
-});
 
-document.addEventListener("DOMContentLoaded", () => {
+  // Handle solved problems list and tag filter
   browser.storage.local.get(null).then((allData) => {
-    // Filter out invalid/undefined problems before displaying
     const problems = Object.values(allData).filter(
       (p) =>
         p &&
@@ -74,9 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
         p.difficulty !== "Unknown Difficulty" &&
         p.status === "Solved"
     );
-
     problems.sort((a, b) => (b.solvedAt || 0) - (a.solvedAt || 0));
-
     const tagSet = new Set();
     problems.forEach((p) => {
       if (Array.isArray(p.tags)) {
@@ -84,11 +74,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
     const tags = Array.from(tagSet);
-
-    // Populate tag filter dropdown
     const tagFilter = document.getElementById("tagFilter");
     if (tagFilter) {
-      // Remove old options except 'All'
       tagFilter.innerHTML = '<option value="all">All</option>';
       if (tags.length > 0) {
         tags.forEach((tag) => {
@@ -104,7 +91,6 @@ document.addEventListener("DOMContentLoaded", () => {
         tagFilter.appendChild(opt);
       }
     }
-
     function renderProblems() {
       const list = document.getElementById("solvedList");
       list.innerHTML = "";
@@ -125,16 +111,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const difficultyClass = problem.difficulty
           ? problem.difficulty.toLowerCase()
           : "";
-
         const link = document.createElement("a");
         link.href = problem.url;
         link.target = "_blank";
         link.textContent = problem.title;
-
         const diffSpan = document.createElement("span");
         diffSpan.className = `difficulty ${difficultyClass}`;
         diffSpan.textContent = problem.difficulty;
-
         const tagsSpan = document.createElement("span");
         tagsSpan.style.fontSize = "0.85em";
         tagsSpan.style.color =
@@ -144,20 +127,19 @@ document.addEventListener("DOMContentLoaded", () => {
           problem.tags && problem.tags.length > 0
             ? `[${problem.tags.join(", ")}]`
             : "[No tags]";
-
         item.appendChild(link);
         item.appendChild(diffSpan);
         item.appendChild(tagsSpan);
         list.appendChild(item);
       });
     }
-
     if (tagFilter) {
       tagFilter.addEventListener("change", renderProblems);
     }
     renderProblems();
   });
 
+  // Handle view all link
   const viewAllLink = document.getElementById("viewAllLink");
   if (viewAllLink) {
     viewAllLink.addEventListener("click", (e) => {
@@ -169,9 +151,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-});
 
-document.addEventListener("DOMContentLoaded", () => {
+  // Handle options/settings button
   const optionsBtn = document.getElementById("optionsBtn");
   if (optionsBtn) {
     optionsBtn.addEventListener("click", () => {

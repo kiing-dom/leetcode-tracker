@@ -1,11 +1,14 @@
 {
   "manifest_version": 2,
   "name": "KeepCode",
-  "version": "0.3.7",
+  "version": "0.4.0",
   "description": "Prep smarter for coding interviews! KeepCode tracks your LeetCode progress so you can focus on solving.",
   "permissions": ["storage", "tabs", "activeTab", "https://leetcode.com/*"],
   "background": {
-    "scripts": ["background.js"],
+    "scripts": [
+      "background.js",
+      "browser-polyfill.js"
+    ],
     "persistent": false
   },
   "browser_action": {
@@ -15,7 +18,11 @@
   "content_scripts": [
     {
       "matches": ["https://leetcode.com/problems/*"],
-      "js": ["leetcodeApi.js", "content.js"]
+      "js": [
+        "leetcodeApi.js",
+         "content.js",
+         "browser-polyfill.js"
+        ]
     }
   ],
   "options_ui": {
