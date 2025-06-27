@@ -1,5 +1,3 @@
-
-// Handles persistent messaging and storage for LeetCode Tracker
 importScripts('browser-polyfill.js');
 
 // Listen for messages from content scripts
